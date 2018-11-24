@@ -25,7 +25,14 @@
         <div class="header__title">
             <h1 class="header__title__text">Електронні петиції</h1>
         </div>
-        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#loginModal">Войти</button>
+        <?php if(!isset($_SESSION['isAuth']))
+        {
+            echo "<button type=\"button\" class=\"btn btn-outline-primary\" data-toggle=\"modal\" data-target=\"#loginModal\">Увійти</button>";
+        }
+        else
+        {
+            echo "<a role=\"button\" class=\"btn btn-outline-primary\" href=\"\?page=logout\">Вийти</a>";
+        } ?>
     </div>
 </header>
 <section class="d-flex flex-column w-100 h-100 justify-content-center">

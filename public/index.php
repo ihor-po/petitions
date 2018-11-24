@@ -21,6 +21,12 @@ if (isset($_GET['page']))
         case 'confirmEmail':
             require_once ('../app/View/confirmEmail.php');
             break;
+        case 'logout':
+            require_once ('../app/Helpers/traits.php');
+            $_SESSION = [];
+            session_destroy();
+            \App\Helpers\Traits::Redirect('index.php');
+            break;
     }
 }
 else
