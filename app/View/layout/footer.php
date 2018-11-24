@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Вхід</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -22,7 +22,7 @@
                         <input type="password" id="inputPassword" class="form-control" placeholder="Пароль" required>
                     </div>
 
-                    <button class="btn btn-lg btn-primary btn-block text-uppercase mt-3" type="submit">Sign in</button>
+                    <button class="btn btn-primary btn-block text-uppercase mt-3" type="submit">Увійти</button>
                 </form>
             </div>
             <div class="modal-footer">

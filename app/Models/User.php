@@ -76,6 +76,33 @@ confirmed SMALLINT(1) NOT NULL
     }
 
     /**
+     * Get user by email
+     * @param string $email
+     * @return mixed
+     */
+    public function getUserByEmail(string $email)
+    {
+        parent::_instance();
+        $stmt = parent::db()->prepare("SELECT * FROM $this->table WHERE email = :email");
+        $stmt->execute([':email' => $email]);
+
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $res;
+    }
+
+    /**
+     * Confirm user with email
+     * @param string $email
+     */
+    public function confirmUser(string $email)
+    {
+        parent::_instance();
+        $stmt = parent::db()->prepare("UPDATE $this->table SET confirmed = 1 WHERE email = :email");
+        $stmt->execute([':email' => $email]);
+    }
+
+    /**
      * Хеширование пароля
      * @param string $password
      * @return string

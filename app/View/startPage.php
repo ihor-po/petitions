@@ -25,11 +25,12 @@
 ?>
 
 <section class="main-content">
+    <?php if(isset($_SESSION['isAuth'])) { ?>
     <div class="main-content__button">
         <a class="btn btn-outline-info" id="createPetition" href="/?page=createPetition">Створити петицію</a>
     </div>
-
-    <div class="main-content__petitions">
+    <?php } ?>
+    <div class="main-content__petitions mt-3">
         <?php
         foreach ($petitions as $petition)
         { ?>
@@ -44,9 +45,11 @@
                 <div class="card-footer__info-text">
                     <span>Дата: <?= $petition['created_date'] ?></span>
                 </div>
+                <?php if(isset($_SESSION['isAuth'])) { ?>
                 <div class="card-footer__subscribe">
                     <a href="/?subscribe=<?=$petition['id'] ?>" class="btn btn-outline-warning">Підписати</a>
                 </div>
+                <?php } ?>
                 <div class="card-footer__info-text">
                     Всього підписів: <span class="badge badge-danger"><?= UserPetition::getPetitionSignatures($petition['id']) ?></span>
                 </div>

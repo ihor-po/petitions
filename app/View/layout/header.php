@@ -12,7 +12,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <title>Кадиум :: Головна</title>
+    <title>Електронні Петиції</title>
     <link rel="stylesheet" href="../../../public/assets/css/reset.css">
     <link rel="stylesheet" href="../../../public/assets/css/main.css">
     <link rel="stylesheet" href="../../../public/libs/bootstrap/css/bootstrap.min.css">
