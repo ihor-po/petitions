@@ -10,16 +10,16 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-signin">
+                <form class="form-signin" method="post" action="login.php">
                     <div class="form-label-group">
                         <label for="login">Логін</label>
-                        <input type="text" id="login" class="form-control" placeholder="Логін" required autofocus>
+                        <input type="text" id="login" name="login" class="form-control" placeholder="Логін" required autofocus>
 
                     </div>
 
                     <div class="form-label-group mt-2">
                         <label for="inputPassword">Пароль</label>
-                        <input type="password" id="inputPassword" class="form-control" placeholder="Пароль" required>
+                        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Пароль" required>
                     </div>
 
                     <button class="btn btn-primary btn-block text-uppercase mt-3" type="submit">Увійти</button>
