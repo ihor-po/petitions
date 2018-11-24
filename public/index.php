@@ -1,9 +1,5 @@
 <?php
 
-//namespace App\Helpers;
-
-//require_once('../app/Helpers/s_mail.php');
-
 session_start();
 
 require_once ('../config/app.php');
@@ -16,6 +12,12 @@ if (isset($_GET['page']))
 {
     switch ($_GET['page'])
     {
+        case 'register':
+            require_once ('../app/View/register.php');
+            break;
+        case 'sendEmail':
+            require_once ('../app/View/sendEmail.php');
+            break;
         case 'confirmEmail':
             require_once ('../app/View/confirmEmail.php');
             break;
@@ -24,7 +26,6 @@ if (isset($_GET['page']))
 else
 {
     require_once ('../app/View/startPage.php');
-    //MailAgent::sendEmail('Dear friend', 'info@photoigor.name');
 }
 
 require_once ('../app/View/layout/footer.php');

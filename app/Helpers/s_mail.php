@@ -12,7 +12,7 @@ class MailAgent {
     public static function sendEmail($nameTo, $emailTo)
     {
         $message = "Шановний(а) $nameTo!"  . PHP_EOL;
-        $message .= "Вдячні Вам за реєстрацію на нашом сайті Електронні Петиції" . PHP_EOL;
+        $message .= "Вдячні Вам за реєстрацію на нашому сайті Електронні Петиції" . PHP_EOL;
         $message .= "Для підтвердження Вашого облікового запису перейдіть за посиланням:" . PHP_EOL . PHP_EOL;
         $message .= "http://" . $_SERVER['HTTP_HOST']. "/?page=confirmEmail&email=$emailTo". PHP_EOL . PHP_EOL;
 

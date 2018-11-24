@@ -27,7 +27,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Закрити</button>
-                <a href="/?page=register" type="button" class="btn btn-outline-info">Зареєструватися</a>
+                <a href="/?page=register" role="button" class="btn btn-outline-info">Зареєструватися</a>
             </div>
         </div>
     </div>

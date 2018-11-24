@@ -54,11 +54,6 @@
         </div>
     <?php } ?>
     </div>
-
-
 </section>
-
-
-
 
 <script src="../../public/assets/js/view/startPage.js"></script>
