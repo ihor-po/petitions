@@ -61,7 +61,6 @@ FOREIGN KEY (owner_id) REFERENCES $this->usersTable(id) ON UPDATE CASCADE ON DEL
 
     /**
      * Get all petitions
-     * @param string $login
      * @return mixed
      */
     public function getAllPetitions() : array

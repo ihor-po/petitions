@@ -9,9 +9,10 @@ require_once ('../framework/Model.php');
 
 class UserPetition extends Model
 {
-    protected $table = USER_PETITION;           //name of table
-    protected $usersTable = USERS;              //name of users table
-    protected $petitionsTable = PETITIONS;      //name of petitions table
+    protected $table = USER_PETITION;                   //name of table
+    protected static $_table = USER_PETITION;           //name of table
+    protected $usersTable = USERS;                      //name of users table
+    protected $petitionsTable = PETITIONS;              //name of petitions table
 
     /**
      * Checking table existence
@@ -53,5 +54,21 @@ FOREIGN KEY (petition_id) REFERENCES $this->petitionsTable(id) ON UPDATE CASCADE
             ':user_id' => $params['user_id'],
             ':petition_id' => $params['petition_id']
         ]);
+    }
+
+
+    /**
+     * Obtaining the number of signatures of the petition
+     * @param int $id
+     * @return int
+     */
+    public static function getPetitionSignatures(int $id) : int
+    {
+        $tb = self::$_table;
+        parent::_instance();
+        $stmt = parent::db()->prepare("SELECT COUNT(id) FROM $tb WHERE petition_id = $id");
+        $stmt->execute(['id']);
+
+        return $stmt->fetchColumn();
     }
 }
