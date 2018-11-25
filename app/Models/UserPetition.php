@@ -56,7 +56,6 @@ FOREIGN KEY (petition_id) REFERENCES $this->petitionsTable(id) ON UPDATE CASCADE
         ]);
     }
 
-
     /**
      * Obtaining the number of signatures of the petition
      * @param int $id
@@ -68,6 +67,25 @@ FOREIGN KEY (petition_id) REFERENCES $this->petitionsTable(id) ON UPDATE CASCADE
         parent::_instance();
         $stmt = parent::db()->prepare("SELECT COUNT(id) FROM $tb WHERE petition_id = $id");
         $stmt->execute(['id']);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Obtaining user signature of the petition
+     * @param int $petitionId
+     * @param int $userId
+     * @return bool
+     */
+    public static function getPetitionUserSignatures(int $petitionId, int $userId) : bool
+    {
+        $tb = self::$_table;
+        parent::_instance();
+        $stmt = parent::db()->prepare("SELECT * FROM $tb WHERE petition_id = :petition_id AND user_id = :user_id");
+        $stmt->execute([
+            'petition_id' => $petitionId,
+            'user_id' => $userId
+        ]);
 
         return $stmt->fetchColumn();
     }

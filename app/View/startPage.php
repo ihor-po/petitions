@@ -1,6 +1,8 @@
 <?php
     namespace App\Models;
 
+    use App\Helpers\Traits;
+
     $petitions = new Petition();
 
     $petitions = $petitions->getAllPetitions();
@@ -14,11 +16,26 @@
     {
         if (isset($_SESSION['isAuth']))
         {
-            $up = new UserPetition();
-            $up->createLink([
-                'user_id' => $_SESSION['user_id'],
-                'petition_id' => $petition_id
-            ]);
+            $usr = new User();
+            $user = $usr->getUserByLogin($_SESSION['login']);
+
+            if ($user != false)
+            {
+                $up = new UserPetition();
+
+                if (!$up->getPetitionUserSignatures($petition_id, $user['id']))
+                {
+                    $up->createLink([
+                        'user_id' => $user['id'],
+                        'petition_id' => $petition_id
+                    ]);
+                }
+                else
+                {
+                    $message = urldecode('Ви вже підписали дану петицію!');
+                    Traits::Redirect('pageError.php?error=' . $message);
+                }
+            }
         }
     }
 
