@@ -23,7 +23,7 @@
 <header class="d-inline-flex justify-content-center">
     <div class="header">
         <div class="header__title">
-            <h1 class="header__title__text">Електронні петиції</h1>
+            <a class="logo_link" href="/"><h1 class="header__title__text">Електронні петиції</h1></a>
         </div>
         <?php if(!isset($_SESSION['isAuth']))
         {
