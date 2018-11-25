@@ -47,6 +47,7 @@ FOREIGN KEY (owner_id) REFERENCES $this->usersTable(id) ON UPDATE CASCADE ON DEL
      */
     public function createPetition(array $params): bool
     {
+        parent::_instance();
         $date = new DateTime('NOW');
         $sql = "INSERT INTO $this->table (title, petition_text, owner_id, created_date) 
                 VALUES (:title, :petition_text, :owner_id, :created_date)";
@@ -70,5 +71,19 @@ FOREIGN KEY (owner_id) REFERENCES $this->usersTable(id) ON UPDATE CASCADE ON DEL
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Obtain petition by title
+     * * @param string $title
+     * @return mixed
+     */
+    public function getPetitionsByTitle(string $title)
+    {
+        parent::_instance();
+        $stmt = parent::db()->prepare("SELECT * FROM $this->table WHERE title = :title");
+        $stmt->execute([':title' => $title]);
+
+        return $stmt->fetch();
     }
 }

@@ -14,4 +14,10 @@ class Traits
     {
         header('Refresh:0;url='.$url);
     }
+
+    public static function ShowError(string $message)
+    {
+        self::Redirect('pageError.php?error=' . urldecode($message));
+    }
+
 }

@@ -32,8 +32,7 @@
                 }
                 else
                 {
-                    $message = urldecode('Ви вже підписали дану петицію!');
-                    Traits::Redirect('pageError.php?error=' . $message);
+                    Traits::ShowError('Ви вже підписали дану петицію!');
                 }
             }
         }
