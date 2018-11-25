@@ -24,25 +24,20 @@ if (isset($_POST) && !empty($_POST['login']) && !empty($_POST['password']))
             }
             else
             {
-                echo ('<section class="main-content"><h1>Ваш обліковий запис не активовано! Активуйте запис!</h1>
-<br><a role="button" class="btn btn-outline-secondary w-25" href="index.php">На головну</a></section>');
+                Traits::ShowError('Ваш обліковий запис не активовано!<br>Активуйте запис!');
             }
         }
         else
         {
-            echo ('<section class="main-content"><h1>Пароль не вірний!</h1>
-<br><a role="button" class="btn btn-outline-secondary w-25" href="index.php">На головну</a></section>');
+            Traits::ShowError('Пароль не вірний!');
         }
-
     }
     else
     {
-        echo ('<section class="main-content"><h1>Користувач не знайден!</h1>
-<br><a role="button" class="btn btn-outline-secondary w-25" href="index.php">На головну</a></section>');
+        Traits::ShowError('Користувач не знайден!');
     }
 }
 else
 {
-    echo ('<section class="main-content"><h1>Ви не заповнили усі поля</h1>
-<br><a role="button" class="btn btn-outline-secondary w-25" href="index.php">На головну</a></section>');
+    Traits::ShowError('Ви не заповнили усі поля');
 }

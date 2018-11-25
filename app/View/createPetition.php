@@ -1,4 +1,3 @@
-
 <section class="main-content">
     <form class="card bg-light register mt-3" id="register" action="create_petition.php?login=<?=$_SESSION['login']?>" method="post">
         <div class="card-header">Створити петицію</div>
