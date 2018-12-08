@@ -10,16 +10,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-signin" method="post" action="login.php">
+                <form class="form-signin" id="formSignin" method="post" >
                     <div class="form-label-group">
                         <label for="login">Логін</label>
                         <input type="text" id="login" name="login" class="form-control" placeholder="Логін" required autofocus>
-
+                        <div class="text-danger" id="loginError"></div>
                     </div>
 
                     <div class="form-label-group mt-2">
                         <label for="inputPassword">Пароль</label>
                         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Пароль" required>
+                        <div class="text-danger" id="passError"></div>
                     </div>
 
                     <button class="btn btn-primary btn-block text-uppercase mt-3" type="submit">Увійти</button>
@@ -27,7 +28,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Закрити</button>
-                <a href="/?page=register" role="button" class="btn btn-outline-info">Зареєструватися</a>
+                <a href="/register" role="button" class="btn btn-outline-info">Зареєструватися</a>
             </div>
         </div>
     </div>

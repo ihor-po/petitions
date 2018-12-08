@@ -66,7 +66,7 @@ confirmed SMALLINT(1) NOT NULL
      * @param string $login
      * @return mixed
      */
-    public function getUserByLogin(string $login) : array
+    public function getUserByLogin(string $login)
     {
         parent::_instance();
         $stmt = parent::db()->prepare("SELECT * FROM $this->table WHERE login = :login");
