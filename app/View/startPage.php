@@ -4,7 +4,7 @@
 <section class="main-content">
     <?php if (isset($isAuth) && $isAuth) { ?>
     <div class="main-content__button">
-        <a class="btn btn-outline-info" id="createPetition" href="/?page=createPetition">Створити петицію</a>
+        <a class="btn btn-outline-info" id="createPetition" href="/createPetition">Створити петицію</a>
     </div>
     <?php } ?>
 
