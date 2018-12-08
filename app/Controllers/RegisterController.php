@@ -4,11 +4,11 @@ namespace App\Controllers;
 use Framework\View;
 use Framework\Controller;
 use App\Helpers\AuthHelper as Auth;
-use App\Helpers\Session;
 use App\Helpers\TraitsHelper as Traits;
 use App\Models\User;
 use App\Helpers\ValidationHelper as Validation;
 use App\Helpers\MailAgentHelper as MailAgent;
+use App\Helpers\SessionHelper as Session;
 
 class RegisterController extends Controller
 {
@@ -20,12 +20,10 @@ class RegisterController extends Controller
     	$mainTitle = APP_TITLE;
     	if (Auth::Auth())
     	{
-    		Traits::Redirect('/feed');
+    		//Traits::Redirect('/feed');
     	}
     }
-    protected function after()
-    {
-    }
+
 	public function register()
 	{
         $title = APP_TITLE . ' :: Реєстрація';
@@ -107,9 +105,12 @@ class RegisterController extends Controller
             {
                 $name = $userData['last_name'] . ' ' . $userData['first_name'] . ' ' . $userData['midle_name'];
                 MailAgent::sendEmail($name, $userData['email']);
-                var_dump($user);die;
-                //$user = User::getByLogin($userData['login']);
-                //Session::initSession($user);
+                
+                $user = new User();
+                $user = $user->getUserByLogin($userData['login']);
+
+                Session::initSession($user);
+                var_dump($_SESSION);die;
                   //  Traits::Redirect('/feeds');
             }
             else
@@ -119,5 +120,38 @@ class RegisterController extends Controller
         }
 
 		return View::render('register', compact('errors', 'title', 'data'));
-	}
+    }
+    
+    public function confirmEmail() {
+        $errors = [];
+        if (isset($_GET) && !empty($_GET))
+        {
+            $usr = new User();
+            $user = $usr->getUserByEmail($_GET['email']);
+            if ($user != false)
+            {
+                if ($user['confirmed'] == 0)
+                {
+                    $usr->confirmUser($_GET['email']);
+                }
+                else
+                {
+                    $errors['confirmError'] = 'Облікові данні вже були підтвердженні!';    
+                }
+            }
+            else
+            {
+                $errors['confirmError'] = 'Користувач не зареєстрован!';
+            }
+        }
+        else
+        {
+            $errors['confirmError'] = 'Помилка підтвердження';
+        }
+        return View::render('/confirmEmail', compact('errors'));
+    }
+
+    protected function after()
+    {
+    }
 }

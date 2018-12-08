@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-class Session
+class SessionHelper
 {
 	private static function issetSession() : bool
 	{
@@ -11,13 +11,16 @@ class Session
 	
 	public static function initSession($user) : void
 	{
-		if (!static::issetSession())
+		if (!self::issetSession())
 		{
 			session_start();
 		}	
 		$_SESSION['user_id'] = $user['id'];
 		$_SESSION['login'] = $user['login'];
-		$_SESSION['name'] = $user['name'];
+		$_SESSION['last_name'] = $user['last_name'];
+		$_SESSION['first_name'] = $user['first_name'];
+		$_SESSION['midle_name'] = $user['midle_name'];
+		$_SESSION['email'] = $user['email'];
 	}
 	public static function closeSession() : void
 	{

@@ -14,7 +14,8 @@ class MailAgentHelper {
         $message = "Шановний(а) $nameTo!"  . PHP_EOL;
         $message .= "Вдячні Вам за реєстрацію на нашому сайті Електронні Петиції" . PHP_EOL;
         $message .= "Для підтвердження Вашого облікового запису перейдіть за посиланням:" . PHP_EOL . PHP_EOL;
-        $message .= "http://" . $_SERVER['HTTP_HOST']. "/?page=confirmEmail&email=$emailTo". PHP_EOL . PHP_EOL;
+        //$message .= "http://" . $_SERVER['HTTP_HOST']. "/?page=confirmEmail&email=$emailTo". PHP_EOL . PHP_EOL;
+        $message .= "http://" . $_SERVER['HTTP_HOST']. "/confirmEmail?email=$emailTo". PHP_EOL . PHP_EOL;
 
         $message .= "Не треба відповідати на цей лист." . PHP_EOL;
         $message .= "Якщо не Ви реєструвались на сайті просто ігноруйте лист" . PHP_EOL;

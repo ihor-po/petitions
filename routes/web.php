@@ -9,6 +9,7 @@ Router::group(['namespace' => '\App\Controllers'], function() {
 	Router::post('/login', 'LoginController@login');
 	Router::get('/register', 'LoginController@register');
 	Router::post('/userRegister', 'RegisterController@register');
+	Router::get('/confirmEmail', 'RegisterController@confirmEmail');
 	// Router::get('/error', 'LoginController@error');
 	// Router::get('/logout', 'MainController@logout');
 	// Router::get('/feeds', 'MainController@feeds');
