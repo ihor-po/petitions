@@ -26,13 +26,13 @@
             <a class="logo_link" href="/"><h1 class="header__title__text">Електронні петиції</h1></a>
         </div>
         <?php if(isset($isAuth) && $isAuth)
-        {
-            echo "<a role=\"button\" class=\"btn btn-outline-primary\" href=\"\?page=logout\">Вийти</a>";
-        }
+        { ?>
+            <a role="button" class="btn btn-outline-primary" href="logout">Вийти</a>
+        <?php }
         else
-        {
-            echo "<button type=\"button\" class=\"btn btn-outline-primary\" data-toggle=\"modal\" data-target=\"#loginModal\">Увійти</button>";
-        } ?>
+        { ?>
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#loginModal">Увійти</button>
+        <?php } ?>
     </div>
 </header>
 <section class="d-flex flex-column w-100 h-100 justify-content-center">

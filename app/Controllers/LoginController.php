@@ -4,7 +4,7 @@ namespace App\Controllers;
 use Framework\View;
 use Framework\Controller;
 use App\Helpers\AuthHelper;
-use App\Helpers\Session;
+use App\Helpers\SessionHelper as Session;
 use App\Helpers\TraitsHelper as Traits;
 use App\Models\User;
 
@@ -14,15 +14,14 @@ class LoginController extends Controller
 
 	protected function before()
     {
-    if (AuthHelper::Auth())
-    	{
+		if (AuthHelper::Auth())
+		{
 			$this->userAuth = true;
-			Traits::Redirect("/");
-        }
-        else
-        {
-            $this->userAuth = false;
-        }
+		}
+		else
+		{
+			$this->userAuth = false;
+		}
 	}
 	
 	public function login()
@@ -39,6 +38,7 @@ class LoginController extends Controller
 				if (password_verify($_POST['password'], $user['password']))
 				{
 					Session::initSession($user);
+					Traits::ReloadPage();
 				}
 				else
 				{
@@ -87,7 +87,10 @@ class LoginController extends Controller
 	 	View::render('404', compact('title'));
 	 }
 
-	 
+	 public function logout(){
+		Session::closeSession();
+		Traits::Redirect('/');
+	}
 
 	 protected function after()
     {

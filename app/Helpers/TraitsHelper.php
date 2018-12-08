@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-class Traits
+class TraitsHelper
 {
     public static function Redirect($url, $statusCode = 303)
     {

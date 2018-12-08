@@ -110,8 +110,7 @@ class RegisterController extends Controller
                 $user = $user->getUserByLogin($userData['login']);
 
                 Session::initSession($user);
-                var_dump($_SESSION);die;
-                  //  Traits::Redirect('/feeds');
+                Traits::Redirect('/');
             }
             else
             {
