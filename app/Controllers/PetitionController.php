@@ -9,6 +9,7 @@ use App\Helpers\TraitsHelper as Traits;
 use App\Models\User;
 use App\Helpers\ValidationHelper as Validator;
 use App\Models\Petition;
+use App\Models\UserPetition;
 
 class PetitionController extends Controller
 {
@@ -76,6 +77,46 @@ class PetitionController extends Controller
 
 		return View::render('createPetition', compact('isAuth', 'data', 'errors'));
 	}
+
+	public function subscribePetition($pttn)
+	{
+		$petitions = new Petition();
+		$pttn = $petitions->getPetitionsById($pttn);
+
+		if ($pttn)
+		{
+			$up = new UserPetition();
+			if (!$up->getPetitionUserSignatures($pttn['id'], $_SESSION['user_id']))
+			{
+				$up->createLink([
+					'user_id' => $_SESSION['user_id'],
+					'petition_id' => $pttn['id']
+				]);
+				Traits::Redirect('/');
+			}
+			else
+			{
+				$errors['subscribe'] = urldecode('Ви вже підписали дану петицію!');
+			}
+		}
+		else
+		{
+			$errors['subscribe'] = "Петиція не знайдена! Помилка підпису!";
+		}
+		$isAuth = $this->userAuth;
+		$this->getAllPetitions($petitions);
+		View::render('startPage', compact('isAuth', 'petitions', 'errors'));
+	}
+
+	private function getAllPetitions(&$petitions) {
+        $petitions = new Petition();
+        $petitions = $petitions->getAllPetitions();
+
+        foreach($petitions as &$petition)
+        {
+            $petition['signature'] = UserPetition::getPetitionSignatures($petition['id']);
+        }
+    }
 
 	 protected function after()
     {

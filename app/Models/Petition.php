@@ -86,4 +86,18 @@ FOREIGN KEY (owner_id) REFERENCES $this->usersTable(id) ON UPDATE CASCADE ON DEL
 
         return $stmt->fetch();
     }
+
+    /**
+     * Obtain petition by id
+     * * @param string $title
+     * @return mixed
+     */
+    public function getPetitionsById(string $id)
+    {
+        parent::_instance();
+        $stmt = parent::db()->prepare("SELECT * FROM $this->table WHERE id = :_id");
+        $stmt->execute([':_id' => $id]);
+
+        return $stmt->fetch();
+    }
 }

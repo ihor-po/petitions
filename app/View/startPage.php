@@ -9,6 +9,7 @@
     <?php } ?>
 
     <div class="main-content__petitions mt-3">
+        <div class="text-danger"><?php if (isset($errors['subscribe'])) echo $errors['subscribe'] ?></div>
         <?php
         foreach ($petitions as $petition)
         { ?>
@@ -25,7 +26,7 @@
                 </div>
                 <?php if (isset($isAuth) && $isAuth) { ?>
                 <div class="card-footer__subscribe">
-                    <a href="/?subscribe=<?=$petition['id'] ?>" class="btn btn-outline-warning">Підписати</a>
+                    <a href="/subscribePetition/<?=$petition['id'] ?>" class="btn btn-outline-warning">Підписати</a>
                 </div>
                 <?php } ?>
                 <div class="card-footer__info-text">
