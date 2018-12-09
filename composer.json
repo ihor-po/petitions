@@ -1,19 +1,20 @@
 {
     "name": "petition/petition",
-    "description": "Project - X",
-    "keywords": ["photoigor.name", "project", "projectx", "project-x"],
+    "description": "Electronic Petitions",
+    "keywords": ["photoigor.name", "petitions", "petition", "electronic_petition"],
     "license": "photoigor.name",
     "type": "project",
     "authors":[
         { 
             "name": "photoigor.name",
-            "email": "photoigor@photoigor.name"
+            "email": "info@photoigor.name"
 	}
     ],
     "require": {
         "php": ">=5.6.4",
         "psr/http-message": "1.0.*",
-        "pecee/simple-router": "4.2.0.6"
+        "pecee/simple-router": "4.2.0.6",
+        "twig/twig": "^2.0"
     },
     "autoload": {
         "psr-4": {

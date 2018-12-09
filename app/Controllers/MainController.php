@@ -10,6 +10,7 @@ use App\Helpers\TraitsHelper as Traits;
 use App\Models\Petition;
 use App\Models\UserPetition;
 use App\Models\User;
+use Twig_Environment;
 
 class MainController extends Controller
 {
@@ -37,8 +38,12 @@ class MainController extends Controller
         $this->getAllPetitions($petitions);
 
         $isAuth = $this->userAuth;
+        
+        $header = View::template('layout/header.twig');
 
-        return View::render('startPage', compact('title', 'petitions', 'isAuth'));
+        echo View::template('startPage.twig', compact('title', 'petitions', 'header', 'isAuth'));
+
+        //return View::render('startPage', compact('title', 'petitions', 'isAuth'));
     }
 
     private function getAllPetitions(&$petitions) {
