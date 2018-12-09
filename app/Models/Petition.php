@@ -6,11 +6,11 @@ use Framework\Model;
 use PDO;
 use DateTime;
 
-require_once ('../framework/Model.php');
+//require_once ('../framework/Model.php');
 
 class Petition extends Model
 {
-    protected $table = PETITIONS;       //name of table
+    public static $table = PETITIONS;       //name of table
     protected $usersTable = USERS;      //name of users table
 
     /**
@@ -67,7 +67,8 @@ FOREIGN KEY (owner_id) REFERENCES $this->usersTable(id) ON UPDATE CASCADE ON DEL
     public function getAllPetitions() : array
     {
         parent::_instance();
-        $stmt = parent::db()->prepare("SELECT * FROM $this->table ORDER BY created_date DESC");
+        $tab = self::$table;
+        $stmt = parent::db()->prepare("SELECT * FROM $tab ORDER BY created_date DESC");
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -95,7 +96,8 @@ FOREIGN KEY (owner_id) REFERENCES $this->usersTable(id) ON UPDATE CASCADE ON DEL
     public function getPetitionsById(string $id)
     {
         parent::_instance();
-        $stmt = parent::db()->prepare("SELECT * FROM $this->table WHERE id = :_id");
+        $tab = self::$table;
+        $stmt = parent::db()->prepare("SELECT * FROM $tab WHERE id = :_id");
         $stmt->execute([':_id' => $id]);
 
         return $stmt->fetch();

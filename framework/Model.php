@@ -3,11 +3,29 @@
 namespace Framework;
 
 use PDO;
+use stdClass;
 
 abstract class Model
 {
     static protected $db;
 
+    public $id;
+    public $object;
+
+    /**
+     * Проверка существования подключения
+     */
+    protected static function _instance()
+    {
+        if (static::$db == null)
+        {
+            static::DB();
+        }
+    }
+
+    /**
+     * Make connection
+     */
     protected static function DB()
     {
         if (null === self::$db) {
@@ -80,13 +98,74 @@ abstract class Model
     }
 
     /**
-     * Проверка существования подключения
+     * Crete class object
      */
-    protected static function _instance()
-    {
-        if (static::$db == null)
+    public function __construct($id = null){
+        if ($id) {
+
+        }
+        else {
+            $this->object = new stdClass();
+        }
+    }
+
+    /**
+     * Get value
+     */
+    public function __get($key) {
+        if (isset($this->object->$key)) {
+            return $this->object->$key;
+        } elseif (isset($this->$key)) {
+            return $this->$key;
+        }
+    }
+
+    /**
+     * Set value
+     */
+    public function __set($key, $value) {
+        if (isset($this->key)) {
+            $this->$key = $value;
+        } elseif (isset($this->object)) {
+            $this->object->$key = $value;
+        }
+    }
+
+    /**
+     * Save function to DB
+     */
+    public function save($id = 0) {
+        
+        if($id)
         {
-            static::DB();
+
+        }
+        else
+        {
+            $key = [];
+            $val = [];
+            $_val = [];
+            $lmark = [];
+            $insrt = [];
+    
+            foreach ($this->object as $k => $v) {
+                $key[] = "`" . $k . "`";
+                $val[] = $v;
+                $_val[] = ":" . $k;                 //create arr for values like :key
+                $insrt[":" . $k] = $v;              //create arr for execute [:key] => val
+            }
+    
+            $key = implode(",", $key);
+            $_val = implode(",", $_val);
+    
+            try {
+                self::_instance();
+                $stmt = self::$db->prepare("INSERT INTO " . $this::$table . " (" . $key . ") VALUES (" . $_val . ")");
+                $stmt->execute($insrt);
+            } catch(\PDOException $ex) 
+            {
+                var_dump($ex->getMessage());die;
+            }
         }
     }
 }

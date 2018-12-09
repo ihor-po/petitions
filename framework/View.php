@@ -7,8 +7,6 @@ use Twig_Loader_Filesystem;
 
 class View
  {
-    public $id;
-
  	public static function render($file, $args = [])
  	{
  		extract($args, EXTR_SKIP);

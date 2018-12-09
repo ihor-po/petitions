@@ -24,7 +24,7 @@
                     </div>
                     {% if (isAuth and isAuth == true) %}
                     <div class="card-footer__subscribe">
-                        <a href="/subscribePetition/<?=$petition['id'] ?>" class="btn btn-outline-warning">Підписати</a>
+                        <a href="/subscribePetition/{{petition.id}}" class="btn btn-outline-warning">Підписати</a>
                     </div>
                     {% endif %}
                     <div class="card-footer__info-text">

@@ -5,7 +5,7 @@ namespace App\Models;
 use Framework\Model;
 use PDO;
 
-require_once ('../framework/Model.php');
+//require_once ('../framework/Model.php');
 
 class User extends Model
 {
