@@ -2,11 +2,6 @@
 <html lang="ua">
     <head>
         {% include 'layout/head.twig' %}
-
-        {# {% block head %} #}
-            {# <link rel="stylesheet" href="style.css" />
-            <title>{% block title %}{% endblock %} - My Webpage</title> #}
-        {# {% endblock %} #}
     </head>
     <body>
         <header>
@@ -14,12 +9,6 @@
         </header>
         <section class="d-flex flex-column w-100 h-100 justify-content-center">
             {% block content %}{% endblock %}
-            {# <div id="content">{% block content %}{% endblock %}</div> #}
-            {# <div id="footer"> #}
-                {# {% block footer %} #}
-                    {# &copy; Copyright 2011 by <a href="http://domain.invalid/">you</a>. #}
-                {# {% endblock %} #}
-            {# </div> #}
         </section>
     </body>
 </html>

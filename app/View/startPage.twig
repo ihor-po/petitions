@@ -9,31 +9,30 @@
     {% endif %}
 
     <div class="main-content__petitions mt-3">
-        {# <div class="text-danger">{% if errors %}<?php if (isset($errors['subscribe'])) echo $errors['subscribe'] ?></div> #}
         <div class="text-danger">{% if errors %} {{ errors.subscribe }} {% endif %}</div>
         {% for petition in petitions %}
-        <div class="card text-center">
-            <div class="card-header">
-                {{ petition.title }}
-            </div>
-            <div class="card-body">
-                <p class="card-text">{{ petition.petition_text }}</p>
-            </div>
-            <div class="card-footer text-muted">
-                <div class="card-footer__info-text">
-                    <span>Дата: {{ petition.created_date }}</span>
+            <div class="card text-center">
+                <div class="card-header">
+                    {{ petition.title }}
                 </div>
-                {% if (isAuth and isAuth == true) %}
-                <div class="card-footer__subscribe">
-                    <a href="/subscribePetition/<?=$petition['id'] ?>" class="btn btn-outline-warning">Підписати</a>
+                <div class="card-body">
+                    <p class="card-text">{{ petition.petition_text }}</p>
                 </div>
-                {% endif %}
-                <div class="card-footer__info-text">
-                    Всього підписів: <span class="badge badge-danger">{{ petition.signature }}</span>
+                <div class="card-footer text-muted">
+                    <div class="card-footer__info-text">
+                        <span>Дата: {{ petition.created_date }}</span>
+                    </div>
+                    {% if (isAuth and isAuth == true) %}
+                    <div class="card-footer__subscribe">
+                        <a href="/subscribePetition/<?=$petition['id'] ?>" class="btn btn-outline-warning">Підписати</a>
+                    </div>
+                    {% endif %}
+                    <div class="card-footer__info-text">
+                        Всього підписів: <span class="badge badge-danger">{{ petition.signature }}</span>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     </div>
 </section>
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">

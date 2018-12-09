@@ -7,22 +7,7 @@ use Twig_Loader_Filesystem;
 
 class View
  {
-	/**
-     * @var Twig_Environment
-     */
-    private static $twig;
-    /**
-     * @var Twig_Loader_Filesystem
-     */
-    private static $loader;
-    /**
-     * @var string
-     */
-    private static $template;
-    /**
-     * @var array
-     */
-    private static $params;
+    public $id;
 
  	public static function render($file, $args = [])
  	{
@@ -36,15 +21,14 @@ class View
 	 }
 	 
 	 public static function template($template, $args = []) {
-		self::$loader = new Twig_Loader_Filesystem('../app/View');
-        self::$twig = new Twig_Environment(self::$loader);
-        self::$template = $template;
+		$loader = new Twig_Loader_Filesystem('../app/View');
+        $twig = new Twig_Environment($loader);
+        $template = $template;
 		
 		extract($args, EXTR_SKIP);
-		self::$params = $args;
 		
 		try {
-            return self::$twig->render(self::$template, self::$params);
+            return $twig->render($template, $args);
         } catch (Twig_Error_Loader $e) {
             $error = new Error();
             $error->index404();

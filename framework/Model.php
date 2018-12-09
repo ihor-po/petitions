@@ -10,7 +10,7 @@ abstract class Model
 
     protected static function DB()
     {
-        if (null === static::$db) {
+        if (null === self::$db) {
             try
             {
                 $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';port=' . DB_PORT;
@@ -33,7 +33,7 @@ abstract class Model
      * Проверка существования таблицы
      * @return bool
      */
-    public  static function exist($table) : bool
+    public static function exist($table) : bool
     {
         $res = false;
 
