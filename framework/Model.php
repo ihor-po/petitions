@@ -12,6 +12,8 @@ abstract class Model
     public $id;
     public $object;
 
+    private $_options = ['where' => []];
+
     /**
      * Проверка существования подключения
      */
@@ -160,12 +162,78 @@ abstract class Model
     
             try {
                 self::_instance();
-                $stmt = self::$db->prepare("INSERT INTO " . $this::$table . " (" . $key . ") VALUES (" . $_val . ")");
+                $stmt = self::$db->prepare("INSERT INTO `" . $this::$table . "` (" . $key . ") VALUES (" . $_val . ")");
                 $stmt->execute($insrt);
             } catch(\PDOException $ex) 
             {
                 var_dump($ex->getMessage());die;
             }
         }
+    }
+
+    /**
+     * Get all data from table
+     * @return mixed
+     */
+    public function all(){
+        try {
+            self::_instance();
+            //$stmt = self::$db->prepare("SELECT * FROM `" . $this::$table . "` ORDER BY " . $orderBy[0] . " " . $orderBy[1] . "\"");
+            $stmt = self::$db->prepare("SELECT * FROM `". $this::$table .  "`");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(\PDOException $ex) 
+        {
+            var_dump($ex->getMessage());die;
+        }
+    }
+
+    public function get() {
+        $args = func_get_args();
+        $_select = $this->_parseSelect($this->_options);
+        $_from = "FROM `" . $this::$table . "`";
+
+        try {
+            self::_instance();
+            $stmt = self::$db->prepare($_select . $_from);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(\PDOException $ex) 
+        {
+            var_dump($ex->getMessage());die;
+        }
+    
+    }
+
+    private function _parseSelect($params){
+        if (isset($params['select']) && $params['select']){
+            $sql='SELECT ';
+            foreach($params['select']['fields'] as $field) {
+                $sql .= "`" . $field . "`,";
+            }
+            $sql = substr($sql, 0, strlen($sql) - 1) . " ";
+        }
+        else
+        {
+            $sql = "SELECT * ";
+        }
+        return $sql;
+    }
+
+    /**
+     * Select fields from DB
+     * @return mixed
+     */
+    public function select(){
+        $args = func_get_args();
+
+        if (count($args) == 1 && !is_array($args[0])){
+            $this->_options['select']['fields'][] = $args[0];
+        } elseif (isset($args[0]) && is_array($args[0])){
+            foreach($args[0] as $field){
+                $this->_options['select']['fields'][] = $field;
+            }
+        } else { $this->_options; }
+        return $this;
     }
 }

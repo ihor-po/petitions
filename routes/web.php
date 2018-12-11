@@ -14,5 +14,4 @@ Router::group(['namespace' => '\App\Controllers'], function() {
 	Router::post('/login', 'LoginController@login');
 	Router::post('/savePetition', 'PetitionController@createPetition');
 	Router::post('/userRegister', 'RegisterController@register');
-	// Router::get('/error5/{msg}', 'MainController@error5');
 });
