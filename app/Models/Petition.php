@@ -60,19 +60,19 @@ FOREIGN KEY (owner_id) REFERENCES $this->usersTable(id) ON UPDATE CASCADE ON DEL
         ]);
     }
 
-    /**
-     * Get all petitions
-     * @return mixed
-     */
-    public function getAllPetitions() : array
-    {
-        parent::_instance();
-        $tab = self::$table;
-        $stmt = parent::db()->prepare("SELECT * FROM $tab ORDER BY created_date DESC");
-        $stmt->execute();
+    // /**
+    //  * Get all petitions
+    //  * @return mixed
+    //  */
+    // public function getAllPetitions() : array
+    // {
+    //     parent::_instance();
+    //     $tab = self::$table;
+    //     $stmt = parent::db()->prepare("SELECT * FROM $tab ORDER BY created_date DESC");
+    //     $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
 
     /**
      * Obtain petition by title
