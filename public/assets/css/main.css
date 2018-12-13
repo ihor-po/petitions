@@ -97,3 +97,17 @@ header {
 .logo_link:hover {
   text-decoration: none;
 }
+.error-box{
+  height:100%;
+  /* position:fixed; */
+  top:20%;
+  width:100%
+}
+.error-body{
+  padding-top:5%
+}
+.error-body h1{
+  font-size:210px;
+  font-weight:900;
+  line-height:210px
+}

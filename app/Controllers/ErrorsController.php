@@ -25,19 +25,21 @@ class ErrorsController extends Controller
 	
 	public function error403()
 	{
-		$title = APP_TITLE . ' :: Станиці не існує';
+		$title = APP_TITLE . ' :: Доступ обмежений';
 
-		$error = 'Такої страниці не існує';
-
-		echo View::template('error404.twig', compact('title', 'error'));
+		echo View::template('error403.twig', compact('title'));
 	}
 	public function error404()
 	{
 		$title = APP_TITLE . ' :: Станиці не існує';
 
-		$error = 'Такої страниці не існує';
+		echo View::template('error404.twig', compact('title'));
+	}
+	public function error405()
+	{
+		$title = APP_TITLE . ' :: Станиці не існує';
 
-		echo View::template('error404.twig', compact('title', 'error'));
+		echo View::template('error404.twig', compact('title'));
 	}
 
 	 protected function after()

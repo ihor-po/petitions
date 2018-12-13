@@ -16,6 +16,9 @@ Router::error(function(Request $request, \Exception $exception) {
 		case 403:
 			TraitsHelper::ReloadPage('/error403');
 			break;
+		case 500:
+			TraitsHelper::ReloadPage('/error500');
+			break;
 	}
 	
     // if($exception instanceof NotFoundHttpException && $exception->getCode() === 404) {
@@ -37,4 +40,5 @@ Router::group(['namespace' => '\App\Controllers'], function() {
 	
 	Router::get('/error404', 'ErrorsController@error404');
 	Router::get('/error403', 'ErrorsController@error403');
+	Router::get('/error500', 'ErrorsController@error500');
 });
