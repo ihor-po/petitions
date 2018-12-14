@@ -173,11 +173,11 @@ abstract class Model
 
     /**
      * Get all data from table
-     * @param string $field
      * @param string $orderBy
+     * @param string $field
      * @return mixed
      */
-    public function all($field = null ,$orderBy = 'ASC'){
+    public function all($orderBy = 'ASC', $field = null){
         
         $sql = "SELECT * FROM `". $this::$table .  "`";
         
@@ -191,7 +191,6 @@ abstract class Model
 
         try {
             self::_instance();
-            //$stmt = self::$db->prepare("SELECT * FROM `" . $this::$table . "` ORDER BY " . $orderBy[0] . " " . $orderBy[1] . "\"");
             $stmt = self::$db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -201,6 +200,9 @@ abstract class Model
         }
     }
 
+    /**
+     * Get data from DB
+     */
     public function get() {
         $args = func_get_args();
         $_select = $this->_parseSelect($this->_options);

@@ -61,12 +61,51 @@ header {
   padding: 0 0 1rem;
   width: 60%;
 }
+.main-content__petitions {
+  width: 90%;
+}
 .card {
   margin-bottom: 1rem;
 }
 .card-header {
   font-weight: 600;
   text-transform: uppercase;
+}
+.main-content__petitions .card-body {
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  width: 100%;
+}
+.card-body__img-part {
+  width: 20%;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.card-body__img-part__img {
+  width: 7.5rem;
+  height: auto;
+}
+.card-body__text-part {
+  width: 50%;
+  border-right: 1px solid #c2c2c2;
+  border-left: 1px solid #c2c2c2;
+}
+.card-text {
+  text-align: justify;
+}
+.card-body__info-part {
+  width: 30%;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  padding-left: 1rem;
 }
 .card-footer {
   display: -webkit-inline-flex;
@@ -110,4 +149,18 @@ header {
   font-size:210px;
   font-weight:900;
   line-height:210px
+}
+
+.card-body__info-part__signatures__counter{
+  border: 1px solid rgb(128,0,0);
+  /* background-color: rgb(172,0, 0); */
+  border-radius: 10px; 
+	font-size: 3.75rem;
+	color: rgb(172,0,0);
+	font-family: 'Open Sans', sans-serif;
+  font-weight:600;
+  padding: 0 10px;
+}
+.card-body__info-part__signatures__text {
+  margin-bottom: 1rem;
 }

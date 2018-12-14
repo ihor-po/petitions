@@ -16,20 +16,36 @@
                     {{ petition.title }}
                 </div>
                 <div class="card-body">
-                    <p class="card-text">{{ petition.petition_text }}</p>
+                    <div class="card-body__img-part">
+                        <img class="card-body__img-part__img" src="/assets/img/trizub.png">
+                    </div>
+                    <div class="card-body__text-part">
+                        <p class="card-text px-3">{{ petition.petition_text }}</p>
+                    </div>
+                    <div class="card-body__info-part">
+                        <div class="card-body__info-part__signatures">
+                            <h5 class="card-body__info-part__signatures__text">Підписів</h5>
+                            <div class="card-body__info-part__signatures__counter">{{ petition.signature }}</div>
+                        </div>
+                                            
+                        {% if (isAuth and isAuth == true) %}
+                        <div class="card-body__info-part__subscribe">
+                            <a href="/subscribePetition/{{petition.id}}" class="btn btn-outline-warning">Підписати</a>
+                        </div>
+                        {% endif %}
+                        {% if (userId and userId == petition.owner_id) %}
+                        <div class="card-body__info-part__subscribe">
+                            <a href="/removePetition/{{petition.id}}" class="btn btn-outline-danger">Редагувати</a>
+                        </div>
+                        {% endif %}   
+
+                    </div>
                 </div>
                 <div class="card-footer text-muted">
                     <div class="card-footer__info-text">
                         <span>Дата: {{ petition.created_date }}</span>
                     </div>
-                    {% if (isAuth and isAuth == true) %}
-                    <div class="card-footer__subscribe">
-                        <a href="/subscribePetition/{{petition.id}}" class="btn btn-outline-warning">Підписати</a>
-                    </div>
-                    {% endif %}
-                    <div class="card-footer__info-text">
-                        Всього підписів: <span class="badge badge-danger">{{ petition.signature }}</span>
-                    </div>
+                    
                 </div>
             </div>
         {% endfor %}

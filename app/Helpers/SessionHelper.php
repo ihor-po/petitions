@@ -27,4 +27,8 @@ class SessionHelper
 		session_unset();
 		session_destroy();
 	}
+
+	public static function getUserId() {
+		return (isset($_SESSION['user_id'])) ? $_SESSION['user_id'] : null;
+	}
 }

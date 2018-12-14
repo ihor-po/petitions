@@ -5,7 +5,7 @@ namespace App\Controllers;
 use Framework\View;
 use Framework\Controller;
 use App\Helpers\AuthHelper;
-use App\Helpers\Session;
+use App\Helpers\SessionHelper as Session;
 use App\Helpers\TraitsHelper as Traits;
 use App\Models\Petition;
 use App\Models\UserPetition;
@@ -46,17 +46,16 @@ class MainController extends Controller
         $this->getAllPetitions($petitions);
 
         $isAuth = $this->userAuth;
+        $userId = Session::getUserId();
 
-        echo View::template('startPage.twig', compact('title', 'petitions', 'isAuth'));
-
-        //return View::render('startPage', compact('title', 'petitions', 'isAuth'));
+        echo View::template('startPage.twig', compact('title', 'petitions', 'isAuth', 'userId'));
     }
 
     private function getAllPetitions(&$petitions) {
         $petitions = new Petition();
         
         //$petitions = $petitions->select()->get();
-        $petitions = $petitions->all();
+        $petitions = $petitions->all('DESC', 'created_date');
 
         foreach($petitions as &$petition)
         {
