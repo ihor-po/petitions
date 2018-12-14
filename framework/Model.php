@@ -104,7 +104,27 @@ abstract class Model
      */
     public function __construct($id = null){
         if ($id) {
+            if(is_object($id))
+            {
+                $this->$object = $id;
+                $this->$id = $this->$object->id;
+            }
+            else
+            {
+                $this->id = $id;
 
+                self::_instance();
+                $tab = $this::$table;
+                $stmt = $this->db()->prepare("SELECT * FROM $tab WHERE id = :_id");
+                $stmt->execute([':_id' => $this->id]);
+
+                $this->object = $stmt->fetchObject();
+
+                if (!isset($this->object->id))
+                {
+                    return false;
+                }
+            }
         }
         else {
             $this->object = new stdClass();
@@ -147,7 +167,6 @@ abstract class Model
             $key = [];
             $val = [];
             $_val = [];
-            $lmark = [];
             $insrt = [];
     
             foreach ($this->object as $k => $v) {
@@ -206,11 +225,12 @@ abstract class Model
     public function get() {
         $args = func_get_args();
         $_select = $this->_parseSelect($this->_options);
+        $_where = $this->_parseWhere($this->_options);
         $_from = "FROM `" . $this::$table . "`";
 
         try {
             self::_instance();
-            $stmt = self::$db->prepare($_select . $_from);
+            $stmt = self::$db->prepare($_select . $_from . $_where);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(\PDOException $ex) 
@@ -235,6 +255,52 @@ abstract class Model
         return $sql;
     }
 
+    private function _parseWhere($params){
+
+        if (isset($params['where']) && count($params['where']) > 0) {
+            if (count($params['where']) == 1) {
+                $field = $params['where'][0]['field'];
+                $action = $params['where'][0]['action'];
+                $value = $params['where'][0]['value'];
+                $sql = "WHERE `" . $this::$table . "`.`" . $field . "` " . $action . " " . $value;
+            }
+            else
+            {
+                $first = true;
+                $_sql = "WHERE ";
+                $sql = "";
+                $isOR = false;
+                foreach($params['where'] as $item) {
+                    if (!isset($item['main_action']) && $item != "OR") {
+                        $field = $item['field'];
+                        $action = $item['action'];
+                        $value = $item['value'];
+                        if ($first)
+                        {
+                            $sql .= "`" . $this::$table . "`.`" . $field . "` " . $action . " " . $value;
+                            $first = false;
+                        }
+                        else
+                        {
+                            $sql .= " AND `" . $this::$table . "`.`" . $field . "` " . $action . " " . $value;
+                        }
+                    }
+                    elseif($item == "OR") {
+                        $sql = "(" . $sql . ") OR (";
+                        $first = true;
+                        $isOR = true;
+                    }
+                }
+            }        
+            $sql = $_sql . $sql;
+            if ($isOR){
+                $sql .= ")";
+            }
+
+            return $sql;
+        }
+    }
+
     /**
      * Select fields from DB
      * @return mixed
@@ -249,6 +315,36 @@ abstract class Model
                 $this->_options['select']['fields'][] = $field;
             }
         } else { $this->_options; }
+        return $this;
+    }
+
+    public function where(){
+        $args = func_get_args();
+
+        if (count($args) > 1 && !is_array($args[0])){
+            $res = count($args);
+            switch($res){
+                case 2:
+                    $this->_options['where'][] = ['field' => $args[0], 'action' => '=', 'value' => $args[1]];
+                    break;
+                case 3:
+                    if ($args[1] != '>' && $args[1] != '<' && $args[1] != '=' && $args[1] != '!=') {
+                        $args[1] = strtoupper($args[1]);
+                    }
+                    $this->_options['where'][] = ['field' => $args[0], 'action' => $args[1], 'value' => $args[2]];
+                    break;    
+            }
+        } else if (count($args) == 1) {
+            $this->_options['where'][] = ['field' => 'id', 'action' => '=', 'value' => $args[0]];
+        }
+
+        return $this;
+    }
+
+    public function whereOR(){
+        if (isset($this->_options['where'][0])) {
+            $this->_options['where']['main_action'] = 'OR';
+        }
         return $this;
     }
 }

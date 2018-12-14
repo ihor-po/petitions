@@ -54,8 +54,13 @@ class MainController extends Controller
     private function getAllPetitions(&$petitions) {
         $petitions = new Petition();
         
-        //$petitions = $petitions->select()->get();
-        $petitions = $petitions->all('DESC', 'created_date');
+        $petitions = $petitions
+            ->select()
+            ->where('id', '=', 1)
+            ->whereOR()
+            ->where('id', '>=', 8)
+            ->get();
+        //$petitions = $petitions->all('DESC', 'created_date');
 
         foreach($petitions as &$petition)
         {

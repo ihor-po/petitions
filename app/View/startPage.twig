@@ -29,16 +29,15 @@
                         </div>
                                             
                         {% if (isAuth and isAuth == true) %}
-                        <div class="card-body__info-part__subscribe">
+                        <div class="card-body__info-part__subscribe mt-4">
                             <a href="/subscribePetition/{{petition.id}}" class="btn btn-outline-warning">Підписати</a>
                         </div>
                         {% endif %}
                         {% if (userId and userId == petition.owner_id) %}
-                        <div class="card-body__info-part__subscribe">
-                            <a href="/removePetition/{{petition.id}}" class="btn btn-outline-danger">Редагувати</a>
+                        <div class="card-body__info-part__subscribe mt-4">
+                            <a href="/editPetition/{{petition.id}}" class="btn btn-outline-danger">Редагувати</a>
                         </div>
                         {% endif %}   
-
                     </div>
                 </div>
                 <div class="card-footer text-muted">

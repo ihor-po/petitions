@@ -6,8 +6,6 @@ use Framework\Model;
 use PDO;
 use DateTime;
 
-//require_once ('../framework/Model.php');
-
 class Petition extends Model
 {
     public static $table = PETITIONS;       //name of table
