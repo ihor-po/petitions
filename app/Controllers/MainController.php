@@ -55,7 +55,8 @@ class MainController extends Controller
     private function getAllPetitions(&$petitions) {
         $petitions = new Petition();
         
-        $petitions = $petitions->select()->get();
+        //$petitions = $petitions->select()->get();
+        $petitions = $petitions->all();
 
         foreach($petitions as &$petition)
         {
