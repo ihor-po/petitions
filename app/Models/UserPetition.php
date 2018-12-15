@@ -6,10 +6,13 @@ use Framework\Model;
 use PDO;
 
 require_once ('../framework/Model.php');
-
+/**
+ * @property int $user_id
+ * @property int $petition_id
+ */
 class UserPetition extends Model
 {
-    protected $table = USER_PETITION;                   //name of table
+    public static $table = USER_PETITION;                   //name of table
     protected static $_table = USER_PETITION;           //name of table
     protected $usersTable = USERS;                      //name of users table
     protected $petitionsTable = PETITIONS;              //name of petitions table
@@ -40,21 +43,21 @@ FOREIGN KEY (petition_id) REFERENCES $this->petitionsTable(id) ON UPDATE CASCADE
         return parent::createTable($sql);
     }
 
-    /**
-     * Creating link user - petition
-     * @param array $params
-     * @return bool
-     */
-    public function createLink(array $params): bool
-    {
-        $sql = "INSERT INTO $this->table (user_id, petition_id) 
-                VALUES (:user_id, :petition_id)";
-        $stmt = parent::db()->prepare($sql);
-        return $stmt->execute([
-            ':user_id' => $params['user_id'],
-            ':petition_id' => $params['petition_id']
-        ]);
-    }
+    // /**
+    //  * Creating link user - petition
+    //  * @param array $params
+    //  * @return bool
+    //  */
+    // public function createLink(array $params): bool
+    // {
+    //     $sql = "INSERT INTO $this->table (user_id, petition_id) 
+    //             VALUES (:user_id, :petition_id)";
+    //     $stmt = parent::db()->prepare($sql);
+    //     return $stmt->execute([
+    //         ':user_id' => $params['user_id'],
+    //         ':petition_id' => $params['petition_id']
+    //     ]);
+    // }
 
     /**
      * Obtaining the number of signatures of the petition

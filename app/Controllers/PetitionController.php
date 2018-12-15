@@ -86,12 +86,18 @@ class PetitionController extends Controller
 		if ($pttn)
 		{
 			$up = new UserPetition();
-			if (!$up->getPetitionUserSignatures($pttn['id'], $_SESSION['user_id']))
+			$up = $up
+				->where('petition_id', $pttn['id'])
+				->where('user_id', Session::getUserId())
+				->get();
+	
+			if (empty($up))
 			{
-				$up->createLink([
-					'user_id' => $_SESSION['user_id'],
-					'petition_id' => $pttn['id']
-				]);
+				$up = new UserPetition();
+				$up->user_id = Session::getUserId();
+				$up->petition_id = $pttn['id'];
+				$up->save();
+
 				Traits::Redirect('/');
 			}
 			else
