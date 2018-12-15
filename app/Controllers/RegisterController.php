@@ -127,20 +127,25 @@ class RegisterController extends Controller
             }
         }
         echo View::template('register.twig', compact('errors', 'title', 'data'));
-		// return View::render('register', compact('errors', 'title', 'data'));
     }
     
     public function confirmEmail() {
         $errors = [];
         if (isset($_GET) && !empty($_GET))
         {
-            $usr = new User();
-            $user = $usr->getUserByEmail($_GET['email']);
+            $email = $_GET['email'];
+            
+            $model = new User();
+            $user = $model->getOne('email', Validation::clean($email));
             if ($user != false)
             {
                 if ($user['confirmed'] == 0)
                 {
-                    $usr->confirmUser($_GET['email']);
+                    $model = new User($user['id']);
+                    $model->confirmed = 1;
+                    if (!$model->save()) {
+                        $errors['confirmError'] = 'Помилка підтвердження облікового запису';
+                    }
                 }
                 else
                 {

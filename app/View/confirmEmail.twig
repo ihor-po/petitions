@@ -1,0 +1,12 @@
+{% extends "layout/main.twig" %}
+
+{% block content %}
+<section class="main-content">
+    {% if (errors && errors.confirmError) %}
+        <h1 class="text-danger"><?= $errors['confirmError']?></h1>
+    {% else %}
+        <h1 class="text-success">Облікові данні підтвержені!</h1>
+    {% endif %}
+    <br><a role="button" class="btn btn-outline-secondary w-25" href="/">На головну</a>
+    </section>
+{% endblock %}

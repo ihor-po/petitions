@@ -85,16 +85,16 @@ confirmed SMALLINT(1) NOT NULL
     //     return $res;
     // }
 
-    /**
-     * Confirm user with email
-     * @param string $email
-     */
-    public function confirmUser(string $email)
-    {
-        parent::_instance();
-        $stmt = parent::db()->prepare("UPDATE $this->table SET confirmed = 1 WHERE email = :email");
-        $stmt->execute([':email' => $email]);
-    }
+    // /**
+    //  * Confirm user with email
+    //  * @param string $email
+    //  */
+    // public function confirmUser(string $email)
+    // {
+    //     parent::_instance();
+    //     $stmt = parent::db()->prepare("UPDATE $this->table SET confirmed = 1 WHERE email = :email");
+    //     $stmt->execute([':email' => $email]);
+    // }
 
     // /**
     //  * Хеширование пароля

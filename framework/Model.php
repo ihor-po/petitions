@@ -119,7 +119,6 @@ abstract class Model
                 $stmt->execute([':_id' => $this->id]);
 
                 $this->object = $stmt->fetchObject();
-
                 if (!isset($this->object->id))
                 {
                     return false;
@@ -156,11 +155,50 @@ abstract class Model
     /**
      * Save function to DB
      */
-    public function save($id = 0) {
-        
-        if($id)
+    public function save() {
+        //var_dump($this->object);die;
+        if($this->object->id)
         {
+            $key = [];
+            $val = [];
+            $_val = [];
+            $insrt = [];
 
+            foreach ($this->object as $k => $v) {
+                $key[] = "`" . $k . "`";
+                $val[] = $v;
+                $_val[] = ":" . $k;                 //create arr for values like :key
+                $insrt[":" . $k] = $v;              //create arr for execute [:key] => val
+            }
+
+            //$key = implode(",", $key);
+            //$_val = implode(",", $_val);
+            
+            $_set = "";
+            $id = null;
+            foreach($key as $item)
+            {
+                //var_dump($item);
+                if ($item == '`id`')
+                {
+                    $id = array_shift($val);
+                }
+                else
+                {
+                    $_set .= "`" . $this::$table . "`." . $item . ' = \'' . array_shift($val) . '\', ';
+                }
+            }
+
+            $_set = substr($_set, 0, strlen($_set) - 2);
+
+            try {
+                self::_instance();
+                $stmt = self::$db->prepare("UPDATE `" . $this::$table . "` SET " . $_set . " WHERE id = :_id");
+                return $stmt->execute([':_id' => $id]);
+            } catch(\PDOException $ex) 
+            {
+                var_dump($ex->getMessage());die;
+            }
         }
         else
         {
