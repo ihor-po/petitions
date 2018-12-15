@@ -88,7 +88,7 @@ FOREIGN KEY (owner_id) REFERENCES $this->usersTable(id) ON UPDATE CASCADE ON DEL
 
     /**
      * Obtain petition by id
-     * * @param string $title
+     * * @param string $id
      * @return mixed
      */
     public function getPetitionsById(string $id)

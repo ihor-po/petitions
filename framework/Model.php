@@ -182,7 +182,7 @@ abstract class Model
             try {
                 self::_instance();
                 $stmt = self::$db->prepare("INSERT INTO `" . $this::$table . "` (" . $key . ") VALUES (" . $_val . ")");
-                $stmt->execute($insrt);
+                return $stmt->execute($insrt);
             } catch(\PDOException $ex) 
             {
                 var_dump($ex->getMessage());die;
@@ -392,5 +392,18 @@ abstract class Model
         }
         $this->_options['orderBy'] = ['field' => $field, 'action' => $keyword];
         return $this;
+    }
+
+    /**
+     * Get one from table where field and value
+     * @param string $field
+     * @param mixed $value
+     * return mixed
+     */
+    public function getOne($field, $value){
+        self::_instance();
+        $stmt = self::$db->prepare("SELECT * FROM `" . $this::$table . "` WHERE `" . $this::$table . "`.`" . $field . "` = :_value");
+        $stmt->execute([':_value' => $value]);
+        return $stmt->fetch();
     }
 }

@@ -13,9 +13,11 @@ $( document ).ready(function() {
             {
                 if (data.loginError) {
                     $("#loginError").html(data.loginError);
+                    $("#passError").html("");
                 }
                 if (data.passError) {
                     $("#passError").html(data.passError);
+                    $("#loginError").html("");
                 }
             }
             else 

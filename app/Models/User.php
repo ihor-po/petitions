@@ -6,10 +6,18 @@ use Framework\Model;
 use PDO;
 
 //require_once ('../framework/Model.php');
-
+/**
+ * @property string $login
+ * @property string $last_name
+ * @property string $first_name
+ * @property string $midle_name
+ * @property string $email
+ * @property string $password
+ * @property int $confirmed
+ */
 class User extends Model
 {
-    protected $table = USERS; //name of table
+    public static $table = USERS; //name of table
 
     /**
      * Проверка существования таблицы
@@ -40,56 +48,42 @@ confirmed SMALLINT(1) NOT NULL
         return parent::createTable($sql);
     }
 
-    /**
-     * Creating user
-     * @param array $params
-     * @return bool
-     */
-    public function createUser(array $params): bool
-    {
-        $sql = "INSERT INTO $this->table (login, last_name, first_name, midle_name, email, password, confirmed) 
-                VALUES (:login, :last_name, :first_name, :midle_name, :email, :password, :confirmed)";
-        $stmt = parent::db()->prepare($sql);
-        return $stmt->execute([
-            ':login' => $params['login'],
-            ':last_name' => $params['last_name'],
-            ':first_name' => $params['first_name'],
-            ':midle_name' => $params['midle_name'],
-            ':email' => $params['email'],
-            ':password' => $this->hashPassword($params['password']),
-            ':confirmed' => $params['confirmed']
-        ]);
-    }
+    // /**
+    //  * Creating user
+    //  * @param array $params
+    //  * @return bool
+    //  */
+    // public function createUser(array $params): bool
+    // {
+    //     $sql = "INSERT INTO $this->table (login, last_name, first_name, midle_name, email, password, confirmed) 
+    //             VALUES (:login, :last_name, :first_name, :midle_name, :email, :password, :confirmed)";
+    //     $stmt = parent::db()->prepare($sql);
+    //     return $stmt->execute([
+    //         ':login' => $params['login'],
+    //         ':last_name' => $params['last_name'],
+    //         ':first_name' => $params['first_name'],
+    //         ':midle_name' => $params['midle_name'],
+    //         ':email' => $params['email'],
+    //         ':password' => $this->hashPassword($params['password']),
+    //         ':confirmed' => 0
+    //     ]);
+    // }
 
-    /**
-     * Get user by login
-     * @param string $login
-     * @return mixed
-     */
-    public function getUserByLogin(string $login)
-    {
-        parent::_instance();
-        $stmt = parent::db()->prepare("SELECT * FROM $this->table WHERE login = :login");
-        $stmt->execute([':login' => $login]);
+    // /**
+    //  * Get user by email
+    //  * @param string $email
+    //  * @return mixed
+    //  */
+    // public function getUserByEmail(string $email)
+    // {
+    //     parent::_instance();
+    //     $stmt = parent::db()->prepare("SELECT * FROM $this->table WHERE email = :email");
+    //     $stmt->execute([':email' => $email]);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
+    //     $res = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    /**
-     * Get user by email
-     * @param string $email
-     * @return mixed
-     */
-    public function getUserByEmail(string $email)
-    {
-        parent::_instance();
-        $stmt = parent::db()->prepare("SELECT * FROM $this->table WHERE email = :email");
-        $stmt->execute([':email' => $email]);
-
-        $res = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $res;
-    }
+    //     return $res;
+    // }
 
     /**
      * Confirm user with email
@@ -102,14 +96,14 @@ confirmed SMALLINT(1) NOT NULL
         $stmt->execute([':email' => $email]);
     }
 
-    /**
-     * Хеширование пароля
-     * @param string $password
-     * @return string
-     */
-    private function hashPassword(string $password): string
-    {
-        return password_hash($password, PASSWORD_DEFAULT);
-    }
+    // /**
+    //  * Хеширование пароля
+    //  * @param string $password
+    //  * @return string
+    //  */
+    // private function hashPassword(string $password): string
+    // {
+    //     return password_hash($password, PASSWORD_DEFAULT);
+    // }
 
 }

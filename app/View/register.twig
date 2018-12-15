@@ -1,0 +1,62 @@
+{% extends "layout/main.twig" %}
+
+{% block content %}
+<section class="main-content">
+<form class="card bg-light register mt-3" id="register" action="/userRegister" method="post">
+    <div class="card-header">Реєстрація</div>
+    <div class="card-body">
+    {# {{ errors[emailError]}} #}
+    {% if (errors and errors.registerError) %}
+    <div class="text-danger" id="registerError"> {{ errors.registerError }} </div>
+    {% endif %}
+        <div class="register_item">
+            <label for="login">Логін</label>
+            <input type="text" id="newLogin" name="newLogin" required autofocus value="{% if (data.newLogin) %}{{ data.newLogin }}{% endif %}">
+            {% if (errors and errors.newLoginError) %}
+            <div class="text-danger" id="newLoginError">{{ errors.newLoginError }}</div>
+            {% endif %}
+        </div>
+        <div class="register_item">
+            <label for="lastName">Прізвище</label>
+            <input type="text" id="lastName" name="last_name" required value="{% if (data.last_name) %}{{ data.last_name }}{% endif %}">
+            {% if (errors and errors.newLoginError) %}
+            <div class="text-danger" id="lastNameError">{{ errors.last_nameError }}</div>
+            {% endif %}
+        </div>
+        <div class="register_item">
+            <label for="firstName">Ім'я</label>
+            <input type="text" id="firstName" name="first_name" required value="{% if (data.first_name) %}{{ data.first_name }}{% endif %}">
+            {% if (errors and errors.first_nameError) %}
+            <div class="text-danger" id="firstNameError">{{ errors.first_nameError }}</div>
+            {% endif %}
+        </div>
+        <div class="register_item">
+            <label for="middleName">По-батькові</label>
+            <input type="text" id="middleName" name="midle_name" required value="{% if (data.midle_name) %}{{ data.midle_name }}{% endif %}">
+            {% if (errors and errors.midle_nameError) %}
+            <div class="text-danger" id="middleNameError">{{ errors.midle_nameError }}</div>
+            {% endif %}
+        </div>
+        <div class="register_item">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required value="{% if (data.email) %}{{ data.email }}{% endif %}">
+            {% if (errors and errors.emailError) %}
+            <div class="text-danger" id="emailError">{{ errors.emailError }}</div>
+            {% endif %}
+        </div>
+        <div class="register_item">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" required>
+            {% if (errors and errors.passwordError) %}
+            <div class="text-danger" id="passwordError">{{ errors.passwordError }}</div>
+            {% endif %}
+        </div>
+        <div class="register_item">
+            <label for="confirm">Підтвердження поролю</label>
+            <input type="password" id="confirm" name="confirm">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-outline-info w-25 align-self-center">Зареєструватися</button>
+</form>
+</section>
+{% endblock %}

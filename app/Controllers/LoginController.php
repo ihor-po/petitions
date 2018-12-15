@@ -31,7 +31,7 @@ class LoginController extends Controller
 		if (isset($_POST) && !empty($_POST['login']) && !empty($_POST['password']))
 		{
 			$user = new User();
-			$user = $user->getUserByLogin($_POST['login']);
+			$user = $user->getOne('login', $_POST['login']);
 			
 			if (isset($user) && $user)
 			{
@@ -78,13 +78,9 @@ class LoginController extends Controller
 
 	 public function register()
 	 {
-	 	$title = APP_TITLE . ' :: Реєстрація';
-	 	View::render('register', compact('title'));
-	 }
-	 public function error()
-	 {
-	 	$title = APP_TITLE . ' :: ERROR';
-	 	View::render('404', compact('title'));
+		 $title = APP_TITLE . ' :: Реєстрація';
+		 echo View::template('register.twig', compact('title'));
+	 	// View::render('', compact('title'));
 	 }
 
 	 public function logout(){

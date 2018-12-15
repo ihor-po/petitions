@@ -54,13 +54,13 @@ class RegisterController extends Controller
             if (Validation::email($_POST['email']))
             {
                 $user = new User();
-                $user = $user->getUserByEmail(Validation::clean($_POST['newLogin']));
-
+                $user = $user->getOne('login', Validation::clean($_POST['newLogin']));
+                
                 if (!$user)
                 {
                     $user = new User();
-                    $user = $user->getUserByEmail(Validation::clean($_POST['email']));
-                    
+                    $user = $user->getOne('email', Validation::clean($_POST['email']));
+
                     if(!$user)
                     {
                         if (!Validation::password($_POST['password'], $_POST['confirm']))
@@ -75,7 +75,7 @@ class RegisterController extends Controller
                 }
                 else
                 {
-                    $errors['newLogin'] = 'Логин вже існує!';	
+                    $errors['newLoginError'] = 'Логин вже існує!';	
                 }
             }
             else
@@ -87,8 +87,8 @@ class RegisterController extends Controller
 		{
 			$errors['registerError'] = 'Помилка відправлення даних';
         }
-        
-        if (empty($error)){
+    
+        if (empty($errors)){
             
             $userData = [
                 'login' => Validation::clean($_POST['newLogin']),
@@ -96,18 +96,27 @@ class RegisterController extends Controller
                 'first_name' => Validation::clean($_POST['first_name']),
                 'midle_name' => Validation::clean($_POST['midle_name']),
                 'email' => Validation::clean($_POST['email']),
-                'password' => $_POST['password'],
+                'password' => $this->hashPassword($_POST['password']),
                 'confirmed' => 0
             ];
         
             $user = new User();
-            if ($user->createUser($userData))
+            $user->login = $userData['login'];
+            $user->last_name = $userData['last_name'];
+            $user->first_name = $userData['first_name'];
+            $user->midle_name = $userData['midle_name'];
+            $user->email = $userData['email'];
+            $user->password = $userData['password'];
+            $user->confirmed = $userData['confirmed'];
+
+            // if ($user->createUser($userData))
+            if ($user->save())
             {
                 $name = $userData['last_name'] . ' ' . $userData['first_name'] . ' ' . $userData['midle_name'];
                 MailAgent::sendEmail($name, $userData['email']);
                 
                 $user = new User();
-                $user = $user->getUserByLogin($userData['login']);
+                $user = $user->getOne('login', $userData['login']);
 
                 Session::initSession($user);
                 Traits::Redirect('/');
@@ -117,8 +126,8 @@ class RegisterController extends Controller
                 $error = 'Ошибка создания пользователя!';		
             }
         }
-
-		return View::render('register', compact('errors', 'title', 'data'));
+        echo View::template('register.twig', compact('errors', 'title', 'data'));
+		// return View::render('register', compact('errors', 'title', 'data'));
     }
     
     public function confirmEmail() {
@@ -148,6 +157,16 @@ class RegisterController extends Controller
             $errors['confirmError'] = 'Помилка підтвердження';
         }
         return View::render('/confirmEmail', compact('errors'));
+    }
+
+    /**
+     * Хеширование пароля
+     * @param string $password
+     * @return string
+     */
+    private function hashPassword(string $password): string
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
     }
 
     protected function after()
