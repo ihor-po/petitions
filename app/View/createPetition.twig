@@ -1,0 +1,23 @@
+{% extends "layout/main.twig" %}
+
+{% block content %}
+<section class="main-content">
+    <form class="card bg-light register mt-3" id="register" action="/savePetition" method="post">
+        <div class="card-header">Створити петицію</div>
+        <div class="card-body">
+        {% if (errors and errors.createPetitionError) %}
+        <div class="text-danger">{{ errors.createPetitionError }}</div>
+        {% endif %}
+            <div class="register_item">
+                <label for="title">Назва петиції</label>
+                <input type="text" id="title" name="title" required autofocus value="{% if (data and data.title) %}{{ data.title }}{% endif %}" >
+            </div>
+            <div class="register_item">
+                <label for="petition_text">Текст петиції</label>
+                <textarea name="petition_text" id="petitionText" rows="4" style="resize: none;">{% if (data and data.petition_text) %}{{ data.petition_text }}{% endif %}</textarea>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-info w-25 align-self-center">Створити петицію</button>
+    </form>
+</section>
+{% endblock %}

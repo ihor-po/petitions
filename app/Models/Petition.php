@@ -6,6 +6,13 @@ use Framework\Model;
 use PDO;
 use DateTime;
 
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $petition_text
+ * @property int $owner_id
+ * @property string $created_date
+ */
 class Petition extends Model
 {
     public static $table = PETITIONS;       //name of table
@@ -56,48 +63,5 @@ FOREIGN KEY (owner_id) REFERENCES $this->usersTable(id) ON UPDATE CASCADE ON DEL
             ':owner_id' => $params['owner_id'],
             ':created_date' => $date->format('Y-m-d H:i:s')
         ]);
-    }
-
-    // /**
-    //  * Get all petitions
-    //  * @return mixed
-    //  */
-    // public function getAllPetitions() : array
-    // {
-    //     parent::_instance();
-    //     $tab = self::$table;
-    //     $stmt = parent::db()->prepare("SELECT * FROM $tab ORDER BY created_date DESC");
-    //     $stmt->execute();
-
-    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // }
-
-    /**
-     * Obtain petition by title
-     * * @param string $title
-     * @return mixed
-     */
-    public function getPetitionsByTitle(string $title)
-    {
-        parent::_instance();
-        $stmt = parent::db()->prepare("SELECT * FROM $this->table WHERE title = :title");
-        $stmt->execute([':title' => $title]);
-
-        return $stmt->fetch();
-    }
-
-    /**
-     * Obtain petition by id
-     * * @param string $id
-     * @return mixed
-     */
-    public function getPetitionsById(string $id)
-    {
-        parent::_instance();
-        $tab = self::$table;
-        $stmt = parent::db()->prepare("SELECT * FROM $tab WHERE id = :_id");
-        $stmt->execute([':_id' => $id]);
-
-        return $stmt->fetch();
     }
 }

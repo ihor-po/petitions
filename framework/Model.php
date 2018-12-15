@@ -156,23 +156,17 @@ abstract class Model
      * Save function to DB
      */
     public function save() {
-        //var_dump($this->object);die;
+
         if($this->object->id)
         {
             $key = [];
             $val = [];
-            // $_val = [];
-            // $insrt = [];
+
 
             foreach ($this->object as $k => $v) {
                 $key[] = "`" . $k . "`";
                 $val[] = $v;
-                // $_val[] = ":" . $k;                 //create arr for values like :key
-                // $insrt[":" . $k] = $v;              //create arr for execute [:key] => val
             }
-
-            //$key = implode(",", $key);
-            //$_val = implode(",", $_val);
             
             $_set = "";
             $id = null;
@@ -302,18 +296,19 @@ abstract class Model
     private function _parseWhere($params){
 
         if (isset($params['where']) && count($params['where']) > 0) {
+            $_sql = "";
+            $sql = "";
+            $isOR = false;
             if (count($params['where']) == 1) {
                 $field = $params['where'][0]['field'];
                 $action = $params['where'][0]['action'];
                 $value = $params['where'][0]['value'];
-                $sql = "WHERE `" . $this::$table . "`.`" . $field . "` " . $action . " " . $value;
+                $sql = "WHERE `" . $this::$table . "`.`" . $field . "` " . $action . " '" . $value . "'";
             }
             else
             {
                 $first = true;
                 $_sql = " WHERE ";
-                $sql = "";
-                $isOR = false;
                 foreach($params['where'] as $item) {
                     if (!isset($item['main_action']) && $item != "OR") {
                         $field = $item['field'];
@@ -321,12 +316,12 @@ abstract class Model
                         $value = $item['value'];
                         if ($first)
                         {
-                            $sql .= "`" . $this::$table . "`.`" . $field . "` " . $action . " " . $value;
+                            $sql .= "`" . $this::$table . "`.`" . $field . "` " . $action . " '" . $value . "'";
                             $first = false;
                         }
                         else
                         {
-                            $sql .= " AND `" . $this::$table . "`.`" . $field . "` " . $action . " " . $value;
+                            $sql .= " AND `" . $this::$table . "`.`" . $field . "` " . $action . " '" . $value . "'";
                         }
                     }
                     elseif($item == "OR") {

@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Helpers\ValidationHelper as Validator;
 use App\Models\Petition;
 use App\Models\UserPetition;
+use DateTime;
 
 class PetitionController extends Controller
 {
@@ -33,26 +34,35 @@ class PetitionController extends Controller
 
         $isAuth = $this->userAuth;
 
-        return View::render('createPetition', compact('title', 'isAuth'));
+		echo View::template('createPetition.twig', compact('title', 'isAuth'));
 	}
 
 	public function createPetition() {
 		if (isset($_POST) && !empty($_POST)) {
-			$user = new User();
-			$user = $user->getUserByLogin($_SESSION['login']);
+			
+			$userId = Session::getUserId();
 
-			if ($user)
+			if (isset($userId))
 			{
 				$params = [
 					'title' => Validator::clean($_POST['title']),
 					'petition_text' => Validator::clean($_POST['petition_text']),
-					'owner_id' => $user['id']
+					'owner_id' => $userId
 				];
+
 				$pttn = new Petition();
-	
-				if (!$pttn->getPetitionsByTitle($params['title']))
+				$res = $pttn->select()->where('title', $params['title'])->get();
+
+				if (empty($res))
 				{
-					$pttn = $pttn->createPetition($params);
+					$date = new DateTime("NOW");
+					$newPetition = new Petition();
+					$newPetition->title = $params['title'];
+					$newPetition->petition_text = $params['petition_text'];
+					$newPetition->owner_id = $userId;
+					$newPetition->created_date = $date->format('Y-m-d H:i:s');
+					$newPetition->save();
+
 					Traits::Redirect('/');
 				}
 				else
@@ -120,7 +130,13 @@ class PetitionController extends Controller
 
         foreach($petitions as &$petition)
         {
-            $petition['signature'] = UserPetition::getPetitionSignatures($petition['id']);
+            $signatures = new UserPetition();
+            $signatures = $signatures
+                            ->select()
+                            ->where('petition_id', $petition['id'])
+                            ->get();
+            
+            $petition['signature'] = count($signatures);
         }
     }
 

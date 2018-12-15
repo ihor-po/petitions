@@ -58,7 +58,13 @@ class MainController extends Controller
 
         foreach($petitions as &$petition)
         {
-            $petition['signature'] = UserPetition::getPetitionSignatures($petition['id']);
+            $signatures = new UserPetition();
+            $signatures = $signatures
+                            ->select()
+                            ->where('petition_id', $petition['id'])
+                            ->get();
+            
+            $petition['signature'] = count($signatures);
         }
     }
 
