@@ -59,7 +59,9 @@ class MainController extends Controller
             ->where('id', '=', 1)
             ->whereOR()
             ->where('id', '>=', 8)
+            ->orderBy('created_date', 'DESC')
             ->get();
+            
         //$petitions = $petitions->all('DESC', 'created_date');
 
         foreach($petitions as &$petition)

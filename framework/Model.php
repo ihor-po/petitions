@@ -226,11 +226,12 @@ abstract class Model
         $args = func_get_args();
         $_select = $this->_parseSelect($this->_options);
         $_where = $this->_parseWhere($this->_options);
+        $_orderBy = $this->_parseOrderBy($this->_options);
         $_from = "FROM `" . $this::$table . "`";
 
         try {
             self::_instance();
-            $stmt = self::$db->prepare($_select . $_from . $_where);
+            $stmt = self::$db->prepare($_select . $_from . $_where . $_orderBy);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(\PDOException $ex) 
@@ -240,6 +241,9 @@ abstract class Model
     
     }
 
+    /**
+     * Create part of sql select
+     */
     private function _parseSelect($params){
         if (isset($params['select']) && $params['select']){
             $sql='SELECT ';
@@ -255,6 +259,9 @@ abstract class Model
         return $sql;
     }
 
+    /**
+     * Create part of sql text where
+     */
     private function _parseWhere($params){
 
         if (isset($params['where']) && count($params['where']) > 0) {
@@ -267,7 +274,7 @@ abstract class Model
             else
             {
                 $first = true;
-                $_sql = "WHERE ";
+                $_sql = " WHERE ";
                 $sql = "";
                 $isOR = false;
                 foreach($params['where'] as $item) {
@@ -302,6 +309,17 @@ abstract class Model
     }
 
     /**
+     * Create part of sql orderBy
+     */
+    private function _parseOrderBy($params) {
+        $sql = "";
+        if (isset($params['orderBy']) && count($params['orderBy']) > 0) {
+            $sql = ' ORDER BY `' . $this::$table . '`.`' . $params['orderBy']['field'] . '` ' . $params['orderBy']['action'];
+        }
+        return $sql;
+    }
+
+    /**
      * Select fields from DB
      * @return mixed
      */
@@ -318,6 +336,9 @@ abstract class Model
         return $this;
     }
 
+    /**
+     * Make configuration where
+     */
     public function where(){
         $args = func_get_args();
 
@@ -328,7 +349,7 @@ abstract class Model
                     $this->_options['where'][] = ['field' => $args[0], 'action' => '=', 'value' => $args[1]];
                     break;
                 case 3:
-                    if ($args[1] != '>' && $args[1] != '<' && $args[1] != '=' && $args[1] != '!=') {
+                    if ($args[1] != '>' && $args[1] != '<' && $args[1] != '=' && $args[1] != '!=' && $args[1] != '>=' && $args[1] != '<=' ) {
                         $args[1] = strtoupper($args[1]);
                     }
                     $this->_options['where'][] = ['field' => $args[0], 'action' => $args[1], 'value' => $args[2]];
@@ -341,10 +362,35 @@ abstract class Model
         return $this;
     }
 
+
+    /**
+     * Make configuration whereOR
+     */
     public function whereOR(){
         if (isset($this->_options['where'][0])) {
             $this->_options['where']['main_action'] = 'OR';
         }
+        return $this;
+    }
+
+    /**
+     * Make configuration ORDER BY
+     */
+    public function orderBy(){
+        $args = func_get_args();
+        $field = 'id';
+        $keyword = 'ASC';
+        if (isset($args))
+        {
+            if (count($args) == 2) {
+                $field = $args[0];
+                $keyword = $args[1];
+            }
+            elseif(count($args) == 1) {
+                $keyword = $args[0];
+            }
+        }
+        $this->_options['orderBy'] = ['field' => $field, 'action' => $keyword];
         return $this;
     }
 }
