@@ -20,7 +20,7 @@ class RegisterController extends Controller
     	$mainTitle = APP_TITLE;
     	if (Auth::Auth())
     	{
-    		//Traits::Redirect('/feed');
+            
     	}
     }
 

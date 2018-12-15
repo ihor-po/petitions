@@ -81,7 +81,7 @@ class PetitionController extends Controller
 	public function subscribePetition($pttn)
 	{
 		$petitions = new Petition();
-		$pttn = $petitions->getPetitionsById($pttn);
+		$pttn = $petitions->getOne('id',$pttn);
 
 		if ($pttn)
 		{
@@ -105,12 +105,12 @@ class PetitionController extends Controller
 		}
 		$isAuth = $this->userAuth;
 		$this->getAllPetitions($petitions);
-		View::render('startPage', compact('isAuth', 'petitions', 'errors'));
+		echo View::template('startPage.twig', compact('isAuth', 'petitions', 'errors'));
 	}
 
 	private function getAllPetitions(&$petitions) {
         $petitions = new Petition();
-        $petitions = $petitions->getAllPetitions();
+        $petitions = $petitions->all('DESC', 'created_date');
 
         foreach($petitions as &$petition)
         {

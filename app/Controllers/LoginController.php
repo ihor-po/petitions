@@ -80,7 +80,6 @@ class LoginController extends Controller
 	 {
 		 $title = APP_TITLE . ' :: Реєстрація';
 		 echo View::template('register.twig', compact('title'));
-	 	// View::render('', compact('title'));
 	 }
 
 	 public function logout(){

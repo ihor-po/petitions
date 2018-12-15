@@ -161,14 +161,14 @@ abstract class Model
         {
             $key = [];
             $val = [];
-            $_val = [];
-            $insrt = [];
+            // $_val = [];
+            // $insrt = [];
 
             foreach ($this->object as $k => $v) {
                 $key[] = "`" . $k . "`";
                 $val[] = $v;
-                $_val[] = ":" . $k;                 //create arr for values like :key
-                $insrt[":" . $k] = $v;              //create arr for execute [:key] => val
+                // $_val[] = ":" . $k;                 //create arr for values like :key
+                // $insrt[":" . $k] = $v;              //create arr for execute [:key] => val
             }
 
             //$key = implode(",", $key);
@@ -178,7 +178,6 @@ abstract class Model
             $id = null;
             foreach($key as $item)
             {
-                //var_dump($item);
                 if ($item == '`id`')
                 {
                     $id = array_shift($val);
