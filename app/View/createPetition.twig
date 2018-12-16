@@ -2,22 +2,32 @@
 
 {% block content %}
 <section class="main-content">
-    <form class="card bg-light register mt-3" id="register" action="/savePetition" method="post">
-        <div class="card-header">Створити петицію</div>
+    <form class="card bg-light register mt-3" id="register" action="{% if (action and action == 'create') %}/savePetition{% else %}/updatePetition{% endif %}" method="post">
+        <div class="card-header">{% if (action and action == 'create') %}Створити петицію{% else %}Редагувати петицію{% endif %}</div>
         <div class="card-body">
         {% if (errors and errors.createPetitionError) %}
         <div class="text-danger">{{ errors.createPetitionError }}</div>
         {% endif %}
+        {% if (success) %}
+        <div class="text-success">Зміни збережено</div>
+        {% endif %}
             <div class="register_item">
                 <label for="title">Назва петиції</label>
                 <input type="text" id="title" name="title" required autofocus value="{% if (data and data.title) %}{{ data.title }}{% endif %}" >
+                <input type="hidden" id="id" name="id" value="{% if (data and data.id) %}{{ data.id }}{% endif %}" >
             </div>
             <div class="register_item">
                 <label for="petition_text">Текст петиції</label>
                 <textarea name="petition_text" id="petitionText" rows="4" style="resize: none;">{% if (data and data.petition_text) %}{{ data.petition_text }}{% endif %}</textarea>
             </div>
         </div>
-        <button type="submit" class="btn btn-outline-info w-25 align-self-center">Створити петицію</button>
+        <div class="d-inline-flex w-100 justify-content-around">
+        {% if (action and action == 'edit') %}
+            <a href="/removePetition/{{data.id}}" role="button" class="btn btn-outline-danger w-25 align-self-center">Видалити петицію</a>
+        {% endif %}
+        <button type="submit" class="btn btn-outline-info w-25 align-self-center">{% if (action and action == 'create') %}Створити петицію{% else %}Зберегти зміни{% endif %}</button>
+        <a href="/" role="button" class="btn btn-outline-secondary w-25 align-self-center">Повернутися</a>
+        </div>
     </form>
 </section>
 {% endblock %}

@@ -438,4 +438,14 @@ abstract class Model
         $stmt->execute([':_value' => $value]);
         return $stmt->fetch();
     }
+
+    /**
+     * Delete from table
+     */
+    public function delete(){
+
+        self::_instance();
+        $stmt = self::$db->prepare("DELETE FROM `" . $this::$table . "` WHERE `" . $this::$table . "`.`id` = :_value");
+        $stmt->execute([':_value' => $this->object->id]);
+    }
 }

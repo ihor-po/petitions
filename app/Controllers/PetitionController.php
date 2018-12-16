@@ -34,12 +34,13 @@ class PetitionController extends Controller
 
         $isAuth = $this->userAuth;
 
-		echo View::template('createPetition.twig', compact('title', 'isAuth'));
+		$action = 'create';
+		echo View::template('createPetition.twig', compact('title', 'isAuth', 'action'));
 	}
 
 	public function createPetition() {
 		if (isset($_POST) && !empty($_POST)) {
-			
+
 			$userId = Session::getUserId();
 
 			if (isset($userId))
@@ -72,7 +73,7 @@ class PetitionController extends Controller
 			}
 			else
 			{
-				$errors['createPetitionError'] = 'Користувач не знайден';	
+				$errors['createPetitionError'] = 'Користувач не знайден';
 			}
 		}
 		else
@@ -85,7 +86,76 @@ class PetitionController extends Controller
 			'petition_text' => (isset($_POST['petition_text'])) ? $_POST['petition_text'] : ""
 		];
 
-		return View::render('createPetition', compact('isAuth', 'data', 'errors'));
+		$action = 'create';
+		$title = APP_TITLE . ':: Створення петиції';
+		echo View::template('createPetition.twig', compact('isAuth', 'data', 'errors', 'action'));
+	}
+
+	/**
+	 * Get petition for edit
+	 */
+	public function editPetition($petitionId){
+		$petition = new Petition($petitionId);
+		$data = [
+			'id' => $petition->id,
+			'title' => $petition->title,
+			'petition_text' => $petition->petition_text
+		];
+		$action = "edit";
+		$isAuth = $this->userAuth;
+		$title = APP_TITLE . ':: Редагування петиції';
+		echo View::template('createPetition.twig', compact('isAuth', 'data', 'errors', 'action', 'title'));
+	}
+
+	/**
+	 * Update petition data
+	 */
+	public function updatePetition(){
+		$data = [
+			'id' => (isset($_POST['id'])) ? $_POST['id'] : "",
+			'title' => (isset($_POST['title'])) ? $_POST['title'] : "",
+			'petition_text' => (isset($_POST['petition_text'])) ? $_POST['petition_text'] : ""
+		];
+		
+		if (isset($_POST) && !empty($_POST)) {
+			$userId = Session::getUserId();
+
+			if (isset($userId)) {
+				$petition = new Petition($data['id']);
+
+				$res = false;
+				if ($data['title'] != $petition->title){
+					$tmp = new Petition();
+					$res = $tmp->getOne('title', $data['title']);
+				}
+				
+				if (!$res)
+				{
+					$petition->title = $data['title'];
+					$petition->petition_text = $data['petition_text'];
+					$petition->save();
+
+					Traits::Redirect('/');
+				}
+				else
+				{
+					$errors['createPetitionError'] = 'Така петиція вже інує!';	
+				}
+			}
+			else
+			{
+				$errors['createPetitionError'] = 'Користувач не знайден';	
+			}
+		}
+		else
+		{
+			$errors['createPetitionError'] = 'Помилка передачі данних!';
+		}
+		$isAuth = $this->userAuth;
+
+		$action = 'edit';
+		$title = APP_TITLE . ':: Редагування петиції';
+		echo View::template('createPetition.twig', compact('isAuth', 'data', 'errors', 'action'));
 	}
 
 	public function subscribePetition($pttn)
@@ -124,6 +194,12 @@ class PetitionController extends Controller
 		echo View::template('startPage.twig', compact('isAuth', 'petitions', 'errors'));
 	}
 
+	public function removePetition($petitionId) {
+		$petition = new Petition($petitionId);
+		$res = $petition->delete();
+		Traits::Redirect('/');
+	}
+
 	private function getAllPetitions(&$petitions) {
         $petitions = new Petition();
         $petitions = $petitions->all('DESC', 'created_date');
@@ -138,7 +214,7 @@ class PetitionController extends Controller
             
             $petition['signature'] = count($signatures);
         }
-    }
+	}
 
 	 protected function after()
     {
